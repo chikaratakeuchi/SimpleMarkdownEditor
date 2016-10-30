@@ -1,0 +1,31 @@
+.result {
+  font-size: 100%;
+}
+
+.result h1 {
+  font-size: 28px;
+}
+
+.result h2 {
+  font-size: 24px;
+}
+
+.result h3 {
+  font-size: 18px;
+}
+
+.result h4 {
+  font-size: 16px;
+}
+
+.result h5 {
+  font-size: 14px;
+}
+
+.result h6 {
+  font-size: 14px;
+}
+
+.result .image_checkbox {
+  height: 10px;
+}

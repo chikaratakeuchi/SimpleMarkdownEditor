@@ -1,0 +1,99 @@
+hr {
+  border-top: 1px solid #8c8b8b;
+}
+
+.header {
+  width: 100%;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #CCCCCC;
+  padding-bottom: 2px;
+  position: fixed;
+  z-index: 1000;
+}
+
+.main {
+  padding-top: 25px;
+  height: 100%;
+}
+
+.left {
+  width: 35%;
+  min-width: 250px;
+}
+
+.main .left,
+.main .right {
+  overflow-y: scroll;
+  height: 95vh;
+}
+
+.right {
+  width: 65%;
+  min-width: 400px;
+}
+
+body {
+  padding: 0px 0px 0px 0px;
+  height: 100%;
+}
+
+.container {
+  width: 100%;
+  min-width: 750px;
+  height: 100%;
+}
+
+html {
+  height: 100%;
+}
+
+.main .left {
+  background-color: #EEEEEE;
+  height: 100%;
+  padding-top: 10px;
+}
+
+body .main textarea {
+  background-color: #EEEEEE;
+}
+
+.image_checkbox {
+  cursor : pointer;
+  width: auto;
+  vertical-align: middle;
+}
+
+.command_help,
+.command_help tr,
+.command_help td {
+  border: none;
+  color: #999999;
+  background-color: #EEEEEE;
+  font-size: 12px;
+}
+.command_help td {
+  padding: 1px 10px;
+  white-space: nowrap;
+}
+
+.result {
+}
+
+.header .button {
+	display: inline-block;
+	cursor: pointer;
+	color: #666666;
+	font-family: Arial;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 0px 10px;
+  margin-top: 2px;
+}
+.header .button:hover {
+  background-color: #EEEEEE;
+}
+.header .button:active {
+}
+.header label {
+  margin-bottom: 0px;
+}

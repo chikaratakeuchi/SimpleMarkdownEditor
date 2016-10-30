@@ -1,0 +1,6 @@
+textarea {
+  resize: vertical;
+  height: 400px;
+  min-height: 300px;
+  font-family: Consolas, 'Courier New', Courier, Monaco, monospace;
+}

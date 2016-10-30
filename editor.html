@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/marked/lib/marked.js"></script>
+    <script src="bower_components/highlightjs/highlight.pack.js"></script>
+    <script src="tasklist.min.js"></script>
+    <script src="editor.js"></script>
+
+    <link rel="stylesheet" href="bower_components/highlightjs/styles/github.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="github.css" />
+    <link rel="stylesheet" href="editor.css" />
+
+    <link rel="stylesheet" href="custom.css" />
+    <link rel="stylesheet" href="font100.css" id="style1" type="text/css" />
+
+  </head>
+  <body>
+    <div class="container">
+      <div class="row header">
+        <div class="col-xs-6 left">
+          <div class="button"><label for="file_open">OPEN<input type="file" id="file_open" style="display:none;"></label></div>
+          <div class="button">SAVE</div>
+          <div class="button"></div>
+        </div>
+        <div class="col-xs-6 right">
+          <form name="select_font_size">
+            <select name="change_font_size" onchange="changeFontSize();">
+              <option value="100">100%</option>
+              <option value="150">150%</option>
+              <option value="200">200%</option>
+            </select>
+          </form>
+        </div>
+      </div>
+      <div class="row main">
+        <div class="col-xs-6 left">
+          <textarea id="editor" class="form-control"></textarea>
+          <table class="command_help">
+            <tr><td>#</td><td>見出し１</td></tr>
+            <tr><td>##</td><td>見出し２</td></tr>
+            <tr><td>###</td><td>見出し３</td></tr>
+            <tr><td>---</td><td>区切り線</td></tr>
+            <tr><td>-</td><td>リスト</td></tr>
+            <tr><td></td><td></td></tr>
+            <tr><td></td><td></td></tr>
+            <tr><td></td><td></td></tr>
+            <tr><td>on + tab</td><td>チェックボックス（ON）</td></tr>
+            <tr><td>off + tab</td><td>チェックボックス（OFF）</td></tr>
+            <tr><td>del + tab</td><td>取り消し線</td></tr>
+            <tr><td>link + tab</td><td>リンク</td></tr>
+            <tr><td>bold + tab</td><td>太字</td></tr>
+          </table>
+        </div>
+        <div class="col-xs-6 right">
+          <div class="result" id="result"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="">
+    </div>
+
+    <script type="text/javascript">
+      document.onkeydown = function (e) {
+        if (e.keyCode == 9) {
+          if(e.preventDefault){
+      			// デフォルトの動作を無効化する
+      			e.preventDefault();
+      		}else{
+      			// デフォルトの動作を無効化する（非標準）
+      			e.keyCode = 0;
+      			return false;
+      		}
+          var posCursole = document.getElementById('editor').selectionStart;
+          var posStart;
+          if(posCursole - 4 > 0){
+            posStart = posCursole - 4;
+          }else{
+            posStart = 0;
+          }
+          var command = document.getElementById('editor').value.substr(posStart, posCursole);
+          //console.log(command);
+
+          switch(true) {
+            case /link/.test(command):
+              replaceText($('#editor').get(0), posCursole-4, posCursole, "[]()", 1);
+              break;
+            case /del/.test(command) :
+              replaceText($('#editor').get(0), posCursole-3, posCursole, "~~~~", 2);
+              break;
+            case /on/.test(command)  :
+              replaceText($('#editor').get(0), posCursole-2, posCursole, "[x]", 3);
+              break;
+            case /off/.test(command) :
+              replaceText($('#editor').get(0), posCursole-3, posCursole, "[ ]", 3);
+              break;
+            case /bold/.test(command) :
+              replaceText($('#editor').get(0), posCursole-4, posCursole, "****", 2);
+              break;
+            default: break;
+          }
+        }
+      }
+
+      function getTextRange(textarea) {
+        textarea.focus();
+        return document.selectioncreateRange();
+      }
+
+      function replaceText(textarea, start, end, txt, pos) {
+        var index = start;
+        var length = end - start;
+
+        textarea.value = textarea.value.substr(0, index) + txt + textarea.value.substr(index + length);
+
+        textarea.focus();
+        var newCaretPosition = index + pos;
+        textarea.setSelectionRange(newCaretPosition, newCaretPosition);
+      }
+    </script>
+    <script type="text/javascript">
+      function changeFontSize() {
+        obj = document.select_font_size.change_font_size;
+        result = document.getElementById("result");
+
+        switch(obj.options[obj.selectedIndex].value) {
+          case "100" :
+            console.log("100");
+            document.getElementById('style1').href = "font100.css";
+            break;
+          case "150" :
+            console.log("150");
+            document.getElementById('style1').href = "font150.css";
+            break;
+          case "200" :
+            console.log("200");
+            document.getElementById('style1').href = "font200.css";
+            break;
+          default :
+            console.log("0");
+        }
+      }
+    </script>
+
+    <script type="text/javascript">
+      $(document).on("click", ".image_checkbox", function() {
+        image_path = $(this).attr('src');
+        //console.log("image_path");
+
+        if(image_path == "bower_components/image/on.png") {
+          $(this).attr('src', 'bower_components/image/off.png');
+          //console.log("OFF");
+        } else if (image_path == "bower_components/image/off.png") {
+          $(this).attr('src', 'bower_components/image/on.png');
+          //console.log("OFF");
+        }
+      });
+    </script>
+
+    <script type="text/javascript">
+      $("#file_open").onchange = function(evt){
+      var file = evt.target.files[0];
+      if(!file.type.match(/text/)){
+          alert('テキストファイルを' + '選んで下さい');
+          return;
+      }
+
+      var reader = new FileReader();
+      reader.onload = function(evt) {
+          $("#editor").value = evt.target.result;
+      }
+
+      reader.readAsText(file, "UTF-8");
+      }
+
+      function $(id) {
+          return document.querySelector(id);
+      }
+    </script>
+
+  </body>
+</html>
